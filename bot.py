@@ -1,5 +1,7 @@
+import pickle
 from collections import UserDict
 from datetime import datetime
+from pathlib import Path
 
 
 class Field:
@@ -91,6 +93,10 @@ class Record:
 class AddressBook(UserDict):
     N = 2
 
+    def __int__(self, filename):
+        super().__int__()
+        self.filename = Path(filename)
+
     def add_user(self, record: Record):
         self.data[record.name.value] = record
 
@@ -117,6 +123,9 @@ class AddressBook(UserDict):
                 index, print_block = 1, '-' * 50 + '\n'
         yield print_block
 
+    def save(self):
+        with open(self.filename, "wb") as db:
+            self.data = pickle.load(db)
 
 phone_book = AddressBook()
 
